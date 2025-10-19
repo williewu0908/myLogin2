@@ -21,3 +21,8 @@ export interface ProfileResponse {
   logged_in_as: string;
   message: string;
 }
+
+export interface LoginForm {
+  userName: string;
+  password: string;
+}
