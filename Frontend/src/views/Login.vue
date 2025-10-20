@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import LoginForm from '@/components/LoginForm.vue'
 import { ElButton } from 'element-plus';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+const handleNavigateToSignUp = () => {
+    router.push({name: 'SignUp'});
+};
 </script>
 
 <template>
@@ -8,9 +14,9 @@ import { ElButton } from 'element-plus';
             <div class="background"></div>
             <div class="button-container">
                   <el-button class="signUp" size="large" round text>
-                        忘記密碼
+                        忘記密碼？
                   </el-button>
-                  <el-button class="signUp" size="large" round plain>
+                  <el-button class="signUp" size="large" round plain @click="handleNavigateToSignUp">
                         註冊
                   </el-button>
             </div>

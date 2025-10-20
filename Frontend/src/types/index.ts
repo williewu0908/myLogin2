@@ -26,3 +26,11 @@ export interface LoginForm {
   userName: string;
   password: string;
 }
+
+export interface SignUpForm {
+  userName: string;
+  userTrueName: string;
+  Email: string;
+  password: string;
+  confirmPassword: string;
+}

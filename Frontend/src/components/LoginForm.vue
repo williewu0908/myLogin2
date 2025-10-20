@@ -7,8 +7,8 @@ import type { LoginForm } from '@/types'
 const isLoading = ref(false)
 const authStore = useAuthStore()
 const loginForm = reactive<LoginForm>({
-    userName: 'Willie',
-    password: 'Willie',
+    userName: '',
+    password: '',
 })
 
 const handleLogin = async () => {
@@ -35,7 +35,7 @@ const handleLogin = async () => {
 </script>
 <template>
     <el-container class="login-container">
-        <el-header style="height: 90px;">
+        <el-header style="height: 90px; position: relative; top: -30px;">
             <h2 class="login-title">EduTools</h2>
         </el-header>
         <el-card class="login-card" shadow="hover">
@@ -59,7 +59,7 @@ const handleLogin = async () => {
                 </el-form-item>
             </el-form>
             <el-divider>
-                <span style="color: var(--el-text-color-regular);">快捷登入</span>
+                <span style="color: var(--el-text-color-regular);">快速登入</span>
             </el-divider>
             <div class="fast-login-container">
                 <el-button circle>
@@ -93,15 +93,17 @@ const handleLogin = async () => {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
 }
 
 .login-card {
-    max-width: 380px;
+    max-width: 400px;
     width: 90%;
-    padding: 30px 40px;
     border-radius: 18px;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(8px);
+    position: relative;
+    top: -30px;
 }
 
 .login-title {
@@ -117,7 +119,8 @@ const handleLogin = async () => {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 10px;
+    margin: 5px 0 10px 0;
+    
 }
 
 .login-button {
@@ -125,7 +128,7 @@ const handleLogin = async () => {
 }
 
 .el-card:deep {
-    padding: 20px 40px;
+    padding: 20px 50px;
     padding-bottom: 0px;
 }
 
