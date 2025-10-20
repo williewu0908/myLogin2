@@ -17,7 +17,7 @@ export const useAuthStore = defineStore('authStore', () => {
       isAuthenticated.value = true;
       user.value = response.data.user; 
       
-      router.push({ name: 'Dashboard' });
+      router.push({ name: 'Home' });
     } catch (error) {
       console.error("Login failed:", error);
       isAuthenticated.value = false;
