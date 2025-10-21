@@ -3,6 +3,7 @@ import { ref, type Ref } from 'vue';
 import { authService } from '@/services/authService';
 import router from '@/router';
 import type { User } from '@/types';
+import type { SignUpForm } from '@/types'
 
 export const useAuthStore = defineStore('authStore', () => {
   // State
@@ -54,11 +55,28 @@ export const useAuthStore = defineStore('authStore', () => {
     }
   }
 
+  async function register(formData: SignUpForm): Promise<void> {
+    try {
+      // 呼叫 service
+      await authService.signUp(formData);
+      
+      // 註冊成功後，引導使用者去登入
+      // (注意：這裡的 'Login' 必須是您 router/index.ts 中定義的 name)
+      router.push({ name: 'Login' });
+      
+    } catch (error) {
+      // 拋出錯誤，讓 Vue 組件可以捕獲並顯示
+      console.error("Registration failed:", error);
+      throw error;
+    }
+  }
+
   return {
     isAuthenticated,
     user,
     login,
     logout,
     checkAuthStatus,
+    register
   };
 });

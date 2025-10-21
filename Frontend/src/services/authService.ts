@@ -5,6 +5,7 @@ import type {
   CheckSessionResponse, 
   ProfileResponse 
 } from '@/types';
+import type { SignUpForm } from '@/types'
 
 export const authService = {
   
@@ -23,5 +24,9 @@ export const authService = {
   
   getProfile(): Promise<AxiosResponse<ProfileResponse>> {
     return apiClient.get<ProfileResponse>('/profile');
+  },
+
+  signUp(formData: SignUpForm): Promise<AxiosResponse<{ msg: string }>> {
+    return apiClient.post('/register', formData);
   }
 };
