@@ -30,7 +30,7 @@ export interface LoginForm {
 export interface SignUpForm {
   userName: string;
   userTrueName: string;
-  Email: string;
+  email: string;
   password: string;
   confirmPassword: string;
 }

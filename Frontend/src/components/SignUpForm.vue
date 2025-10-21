@@ -9,7 +9,7 @@ const authStore = useAuthStore()
 const signUpForm = reactive<SignUpForm>({
     userName: '',
     userTrueName: '',
-    Email: '',
+    email: '',
     password: '',
     confirmPassword: '',
 })
