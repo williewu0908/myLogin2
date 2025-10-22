@@ -23,7 +23,7 @@ app.config['SESSION_REDIS'] = redis.from_url('redis://localhost:6379')
 db.init_app(app)
 bcrypt.init_app(app)
 # 設置 CORS (允許 Vue 帶 Cookie)
-cors.init_app(app, resources={r"/auth/*": {"origins": "http://localhost:8080"}}, supports_credentials=True)
+cors.init_app(app, resources={r"/auth/*": {"origins": "http://localhost:5173"}}, supports_credentials=True)
 sess.init_app(app)
 
 # 註冊藍圖

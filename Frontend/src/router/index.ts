@@ -4,17 +4,30 @@ import Login from '@/views/Login.vue';
 import Home from '@/views/Home.vue';
 import SignUp from '@/views/SignUp.vue';
 
-// 明確定義 routes 的型別
 const routes: Array<RouteRecordRaw> = [
-  { path: '/login', name: 'Login', component: Login },
-  { path: '/signup', name: 'SignUp', component: SignUp },
-  { 
-    path: '/Home', 
-    name: 'Home', 
-    component: Home, 
-    meta: { requiresAuth: true }
+  {
+    path: '/home',
+    name: 'Home',
+    component: Home,
+    meta: { requiresAuth: true } // 受保護的路由
   },
-  { path: '/', redirect: '/Home' }
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login,
+    meta: { guestOnly: true } // 僅限訪客
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: SignUp,
+    meta: { guestOnly: true } // 僅限訪客
+  },
+  // 根目錄重定向
+  {
+    path: '/',
+    redirect: '/home'
+  }
 ];
 
 const router = createRouter({
@@ -23,13 +36,31 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  // Pinia store 必須在 'beforeEach' 內部獲取
   const authStore = useAuthStore();
   const loggedIn = authStore.isAuthenticated;
 
-  if (to.meta.requiresAuth && !loggedIn) {
-    next({ name: 'Login' });
-  } else {
+  // 情況一：如果目標是「僅限訪客」的頁面
+  if (to.meta.guestOnly) {
+    if (loggedIn) {
+      // 如果用戶已經登入，重定向到 Home
+      next({ name: 'Home' });
+    } else {
+      // 如果用戶未登入，允許訪問
+      next();
+    }
+  }
+  // 情況二：如果目標是「需要認證」的頁面 (例如 /home)
+  else if (to.meta.requiresAuth) {
+    if (loggedIn) {
+      // 如果用戶已經登入，允許訪問
+      next();
+    } else {
+      // 如果用戶未登入，重定向到 Login
+      next({ name: 'Login' });
+    }
+  }
+  // 情況三：其他所有頁面
+  else {
     next();
   }
 });

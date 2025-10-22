@@ -11,22 +11,22 @@ export const authService = {
   
   // AxiosResponse<LoginResponse> 表示 data 屬性會是 LoginResponse 型別
   login(username: string, password: string): Promise<AxiosResponse<LoginResponse>> {
-    return apiClient.post<LoginResponse>('/login', { username, password });
+    return apiClient.post<LoginResponse>('auth/login', { username, password });
   },
 
   logout(): Promise<AxiosResponse<{ msg: string }>> {
-    return apiClient.post('/logout');
+    return apiClient.post('auth/logout');
   },
 
   checkSession(): Promise<AxiosResponse<CheckSessionResponse>> {
-    return apiClient.get<CheckSessionResponse>('/check_session');
+    return apiClient.get<CheckSessionResponse>('auth/check_session');
   },
   
   getProfile(): Promise<AxiosResponse<ProfileResponse>> {
-    return apiClient.get<ProfileResponse>('/profile');
+    return apiClient.get<ProfileResponse>('auth/profile');
   },
 
   signUp(formData: SignUpForm): Promise<AxiosResponse<{ msg: string }>> {
-    return apiClient.post('/register', formData);
+    return apiClient.post('auth/register', formData);
   }
 };

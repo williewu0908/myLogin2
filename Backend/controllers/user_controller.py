@@ -14,7 +14,7 @@ auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 def register():
     data = request.get_json()
     id = str(uuid.uuid4())
-    username = data.get('username') 
+    username = data.get('userName') 
     user_true_name = data.get('userTrueName')
     password = data.get('password')
     email = data.get('email')
