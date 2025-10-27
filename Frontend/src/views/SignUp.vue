@@ -54,7 +54,7 @@ const handleNavigateToSignIn = () => {
       z-index: 0;
 }
 
-/* 加上顏色蒙版 */
+/* 顏色蒙版 */
 .background::before {
       content: '';
       position: absolute;
@@ -102,6 +102,6 @@ const handleNavigateToSignIn = () => {
   font-size: 10px;
   line-height: 1.4;
   z-index: 3;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4); /* 提高可讀性 */
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 </style>

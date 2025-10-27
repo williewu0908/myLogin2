@@ -18,8 +18,8 @@ const routes: Array<RouteRecordRaw> = [
     meta: { guestOnly: true } // 僅限訪客
   },
   {
-    path: '/register',
-    name: 'Register',
+    path: '/signUp',
+    name: 'SignUp',
     component: SignUp,
     meta: { guestOnly: true } // 僅限訪客
   },

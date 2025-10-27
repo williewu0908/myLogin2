@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useAuthStore } from '@/stores/authStore';
-import { ElMessage, ElForm, ElMain, ElButton, ElAffix, ElCard, ElContainer, ElHeader, ElCol, ElRow, ElImage } from 'element-plus'
+import { ElAnchor, ElAnchorLink, ElMessage, ElDialog, ElAvatar, ElMain, ElButton, ElCard, ElContainer, ElHeader, ElFooter, ElCol, ElRow, ElImage } from 'element-plus'
 import { useRouter } from 'vue-router';
 import backgroundImage from '@/assets/bg.jpg'
+import { UserFilled } from '@element-plus/icons-vue'
 
-// 獲取 router 實例，用於內部跳轉
 const router = useRouter();
+const authStore = useAuthStore();
 
-// 定義卡片資料的型別
 interface FeatureCard {
   id: number;
   title: string;
@@ -17,79 +17,99 @@ interface FeatureCard {
   targetUrl: string; // 點擊後要跳轉的 URL
 }
 
-// 卡片的靜態資料
-const cardData = ref<FeatureCard[]>([
+interface CardGroup {
+  year: number | string;
+  cards: FeatureCard[];
+}
+
+const groupedCardData = ref<CardGroup[]>([
   {
-    id: 1,
-    title: '功能一：數據分析',
-    description: '深入了解您的數據，提供視覺化報表。',
-    imageUrl: 'https://picsum.photos/400/250?random=2',
-    targetUrl: '/analytics' // 內部路由
+    year: 2025,
+    cards: [
+      {
+        id: 1,
+        title: '功能一：數據分析',
+        description: '深入了解您的數據，提供視覺化報表。',
+        imageUrl: 'https://picsum.photos/400/250?random=2',
+        targetUrl: '/analytics'
+      },
+      {
+        id: 2,
+        title: '功能二：用戶管理',
+        description: '輕鬆管理所有使用者的資料與權限。',
+        imageUrl: 'https://picsum.photos/400/250?random=3',
+        targetUrl: '/users'
+      },
+      {
+        id: 3,
+        title: '功能三：專案設定',
+        description: '設定您的專案參數與喜好設定。',
+        imageUrl: 'https://picsum.photos/400/250?random=4',
+        targetUrl: '/settings'
+      },
+    ]
   },
   {
-    id: 2,
-    title: '功能二：用戶管理',
-    description: '輕鬆管理所有使用者的資料與權限。',
-    imageUrl: 'https://picsum.photos/400/250?random=3',
-    targetUrl: '/users' // 內部路由
+    year: 2024,
+    cards: [
+      {
+        id: 4,
+        title: '功能一：數據分析',
+        description: '深入了解您的數據，提供視覺化報表。',
+        imageUrl: 'https://picsum.photos/400/250?random=2',
+        targetUrl: '/analytics'
+      },
+      {
+        id: 5,
+        title: '功能二：用戶管理',
+        description: '輕鬆管理所有使用者的資料與權限。',
+        imageUrl: 'https://picsum.photos/400/250?random=3',
+        targetUrl: '/users'
+      },
+      {
+        id: 6,
+        title: '功能三：專案設定',
+        description: '設定您的專案參數與喜好設定。',
+        imageUrl: 'https://picsum.photos/400/250?random=4',
+        targetUrl: '/settings'
+      },
+      {
+        id: 7,
+        title: '功能四：外部連結',
+        description: '點擊這裡查看我們的官方文件。',
+        imageUrl: 'https://picsum.photos/400/250?random=5',
+        targetUrl: 'https://example.com'
+      },
+    ]
   },
   {
-    id: 3,
-    title: '功能三：專案設定',
-    description: '設定您的專案參數與喜好設定。',
-    imageUrl: 'https://picsum.photos/400/250?random=4',
-    targetUrl: '/settings' // 內部路由
-  },
-  {
-    id: 4,
-    title: '功能四：外部連結',
-    description: '點擊這裡查看我們的官方文件。',
-    imageUrl: 'https://picsum.photos/400/250?random=5',
-    targetUrl: 'https://example.com' // 外部 URL
-  },
-  {
-    id: 5,
-    title: '功能一：數據分析',
-    description: '深入了解您的數據，提供視覺化報表。',
-    imageUrl: 'https://picsum.photos/400/250?random=2',
-    targetUrl: '/analytics' // 內部路由
-  },
-  {
-    id: 6,
-    title: '功能二：用戶管理',
-    description: '輕鬆管理所有使用者的資料與權限。',
-    imageUrl: 'https://picsum.photos/400/250?random=3',
-    targetUrl: '/users' // 內部路由
-  },
-  {
-    id: 7,
-    title: '功能三：專案設定',
-    description: '設定您的專案參數與喜好設定。',
-    imageUrl: 'https://picsum.photos/400/250?random=4',
-    targetUrl: '/settings' // 內部路由
-  },
-  {
-    id: 8,
-    title: '功能四：外部連結',
-    description: '點擊這裡查看我們的官方文件。',
-    imageUrl: 'https://picsum.photos/400/250?random=5',
-    targetUrl: 'https://example.com' // 外部 URL
-  },
-  {
-    id: 9,
-    title: '功能一：數據分析',
-    description: '深入了解您的數據，提供視覺化報表。',
-    imageUrl: 'https://picsum.photos/400/250?random=2',
-    targetUrl: '/analytics' // 內部路由
-  },
-  {
-    id: 10,
-    title: '功能二：用戶管理',
-    description: '輕鬆管理所有使用者的資料與權限。',
-    imageUrl: 'https://picsum.photos/400/250?random=3',
-    targetUrl: '/users' // 內部路由
+    year: 2023,
+    cards: [
+      {
+        id: 8,
+        title: '功能一：數據分析',
+        description: '深入了解您的數據，提供視覺化報表。',
+        imageUrl: 'https://picsum.photos/400/250?random=2',
+        targetUrl: '/analytics'
+      },
+      {
+        id: 9,
+        title: '功能二：用戶管理',
+        description: '輕鬆管理所有使用者的資料與權限。',
+        imageUrl: 'https://picsum.photos/400/250?random=3',
+        targetUrl: '/users'
+      },
+      {
+        id: 10,
+        title: '功能四：外部連結',
+        description: '點擊這裡查看我們的官方文件。',
+        imageUrl: 'https://picsum.photos/400/250?random=5',
+        targetUrl: 'https://example.com'
+      },
+    ]
   }
 ]);
+
 
 // 點擊卡片時的處理函式
 const handleCardClick = (url: string) => {
@@ -106,15 +126,29 @@ const handleCardClick = (url: string) => {
 };
 
 
+const dialogVisible = ref(false);
+
+const handleLogout = async () => {
+  try {
+    await authStore.logout();
+    ElMessage.success('已成功登出！');
+    router.push('/login');
+  } catch (error) {
+    ElMessage.error('登出失敗，請稍後再試。');
+  }
+};
+
 </script>
 
 <template>
   <el-container direction="vertical" class="home-container">
     <el-header height="300px" class="home-header">
-      <div class="home-button-container">
-        <el-button class="signOut" size="large" round plain>
+      <div class="home-header-button-container">
+        <!-- <h1>Edu<span>Tools</span></h1> -->
+        <el-button class="signOut" size="large" round plain @click="dialogVisible = true">
           登出
         </el-button>
+        <el-avatar class="home-avatar" :size="40" :icon="UserFilled"></el-avatar>
       </div>
       <el-image class="home-image" :src="backgroundImage" fit="cover" alt="首頁橫幅圖片" />
       <div class="home-text">
@@ -122,25 +156,59 @@ const handleCardClick = (url: string) => {
         <p>Codes & Games & Tools</p>
       </div>
     </el-header>
+    <el-dialog v-model="dialogVisible" title="確認" width="300" align-center>
+      <span>確定要登出嗎？</span>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="dialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="handleLogout">
+            確定
+          </el-button>
+        </div>
+      </template>
+    </el-dialog>
 
     <el-main class="features-section">
-      <el-row :gutter="20">
-
-        <el-col v-for="card in cardData" :key="card.id" :xs="24" :sm="12" :md="6">
-          <el-card shadow="hover" :body-style="{ padding: '0px' }" class="feature-card"
-            @click="handleCardClick(card.targetUrl)">
-            <el-image :src="card.imageUrl" fit="cover" class="card-image" alt="功能圖片" />
-
-            <div class="card-content">
-              <h3>{{ card.title }}</h3>
-              <p>{{ card.description }}</p>
-            </div>
-          </el-card>
+      <el-row>
+        <el-col :lg="2" :md="2" :sm="2" :xs="3">
+          <div class="fixed-anchor-container">
+            <el-anchor class="home-anchor" direction="vertical" :offset="50">
+              <el-anchor-link v-for="group in groupedCardData" :key="group.year" :href="`#year-${group.year}`"
+                :title="String(group.year)" />
+            </el-anchor>
+          </div>
         </el-col>
+        <el-col :lg="22" :md="20" :sm="20" :xs="18">
+          <div v-for="group in groupedCardData" :key="group.year" class="year-section">
+            <h2 :id="`year-${group.year}`" class="year-title">
+              {{ group.year }}
+            </h2>
+
+            <el-row :gutter="20">
+              <el-col v-for="card in group.cards" :key="card.id" :xs="24" :sm="12" :md="8" :lg="6">
+                <el-card shadow="hover" :body-style="{ padding: '0px' }" class="feature-card"
+                  @click="handleCardClick(card.targetUrl)">
+                  <el-image :src="card.imageUrl" fit="cover" class="card-image" alt="功能圖片" />
+                  <div class="card-content">
+                    <h3>{{ card.title }}</h3>
+                    <p>{{ card.description }}</p>
+                  </div>
+                </el-card>
+              </el-col>
+            </el-row>
+          </div>
+        </el-col>
+
       </el-row>
     </el-main>
-
+    <el-footer class="footer-text">
+      <p>©2008-2025 Host by Prof. Po-Hsun Cheng(鄭伯壎) & Prof. Li-Wei Chen(陳立偉)</p>
+      <p>Software Engineering and Management, National Kaohsiung Normal University, Taiwan.</p>
+      <p>Information Education Center, National Kaohsiung Normal University, Taiwan.</p>
+      <p>[Source] Wei-Ting Wu(吳威廷)</p>
+    </el-footer>
   </el-container>
+
 </template>
 
 <style scoped>
@@ -149,15 +217,15 @@ const handleCardClick = (url: string) => {
   align-items: center;
 }
 
-/* 1. 頂端 Hero 圖片區塊 (el-header) */
 .home-header {
   position: relative;
   width: 100%;
   padding: 0;
   margin-bottom: 24px;
+  display: flex;
 }
 
-.home-button-container {
+.home-header-button-container {
   position: fixed;
   display: flex;
   align-items: center;
@@ -171,54 +239,85 @@ const handleCardClick = (url: string) => {
   z-index: 10000;
 }
 
+.home-header-button-container h1 {
+  color: white;
+  font-size: 40px;
+  margin-right: auto;
+  font-weight: bold;
+}
+
+.home-header-button-container h1 span {
+  color: orange;
+  font-weight: bold;
+}
+
+.home-avatar {
+  margin-left: 20px;
+}
+
 .signOut {
-      background-color: rgba(12, 12, 12, 0.164);
-      color: white;
+  background-color: rgba(12, 12, 12, 0.164);
+  color: white;
+  border: 2px solid white;
 }
 
 .signOut:hover {
-      color: rgb(63, 63, 63);
-      background-color: white;
-      border: transparent;
+  color: rgb(63, 63, 63);
+  background-color: white;
+  border: 2px solid white;
 }
 
 .home-image {
   width: 100%;
   height: 100%;
   background-color: #c2c1c16e;
-  /* (可選) 圓角 */
   display: block;
-  /* 確保圖片正確填滿 */
 }
 
-/* (可選) 圖片上的疊加文字 (保持不變) */
 .home-text {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
   text-align: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .home-text h2 {
-  font-size: 2.5rem;
+  font-size: 7vmin;
   font-weight: bold;
+  color: white;
   margin-bottom: 10px;
 }
 
-/* 2. 功能卡片區塊 (el-main) */
-.features-section {
-  width: 80%;
-
+.home-text p {
+  font-size: 4vmin;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: orange;
 }
 
-/* --- 卡片樣式 (保持不變) --- */
+/* 功能卡片區塊 (el-main) */
+.features-section {
+  max-width: 1500px;
+  width: 95%;
+}
+
+@media (max-width: 768px) {
+  .features-section {
+    width: 100%;
+  }
+}
+
 .feature-card {
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-bottom: 20px;
+  max-width: 288px;
+  margin: 0 auto 20px auto;
+  height: 250px;
 }
 
 .feature-card:hover {
@@ -227,7 +326,7 @@ const handleCardClick = (url: string) => {
 
 .card-image {
   width: 100%;
-  height: 180px;
+  height: 162px;
   display: block;
 }
 
@@ -245,5 +344,42 @@ const handleCardClick = (url: string) => {
   font-size: 0.9rem;
   color: #606266;
   line-height: 1.4;
+}
+
+.year-section {
+  margin-bottom: 30px;
+}
+
+.year-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: var(--el-text-color-primary);
+}
+
+.fixed-anchor-container {
+  height: 100%;
+  top: 80px;
+  display: block;
+  overflow: hidden;
+}
+
+.home-anchor {
+  position: fixed;
+}
+
+.footer-text {
+  width: 100%;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #333;
+  text-align: center;
+  color: white;
+  font-size: 12px;
+  line-height: 1.5;
+  z-index: 3;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 </style>
