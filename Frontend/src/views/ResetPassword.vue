@@ -1,32 +1,14 @@
 <script setup lang="ts">
-import SignUpForm from '@/components/SignUpForm.vue'
-import { ElButton } from 'element-plus';
-import { useRouter } from 'vue-router';
+import ResetPasswdForm from '@/components/ResetPasswdForm.vue'
 
-const router = useRouter();
-const handleNavigateToSignIn = () => {
-    router.push({name: 'Login'});
-};
-const handleNavigateToForgetPassword = () => {
-    router.push({name: 'ForgetPassword'});
-};
 </script>
 
 <template>
-      <div class="signup-page">
+      <div class="login-page">
             <div class="background"></div>
-            <div class="button-container">
-                  <el-button class="signIn" size="large" round text @click="handleNavigateToForgetPassword">
-                        忘記密碼？
-                  </el-button>
-                  <el-button class="signIn" size="large" round plain @click="handleNavigateToSignIn">
-                        我已經有帳號
-                  </el-button>
-            </div>
             <div class="form-wrapper">
-                  <SignUpForm />
+                  <ResetPasswdForm />
             </div>
-            <!-- 版權資訊 -->
             <footer class="footer-text">
                   <p>©2008-2025 Host by Prof. Po-Hsun Cheng(鄭伯壎) & Prof. Li-Wei Chen(陳立偉)</p>
                   <p>Software Engineering & Management, NKNU, Taiwan</p>
@@ -37,7 +19,7 @@ const handleNavigateToForgetPassword = () => {
 </template>
 
 <style scoped>
-.signup-page {
+.login-page {
       position: relative;
       width: 100%;
       overflow: hidden;
@@ -73,28 +55,6 @@ const handleNavigateToForgetPassword = () => {
 .form-wrapper {
       position: relative;
       z-index: 1;
-}
-
-.button-container {
-      position: absolute;
-      top: 2%;
-      right: 5%;
-      z-index: 2;
-}
-
-.signIn {
-      background-color: transparent;
-      color: white;
-}
-
-.signIn.is-text {
-      color: white;
-}
-
-.signIn:hover {
-      color: purple;
-      background-color: white;
-      border: transparent;
 }
 .footer-text {
   position: absolute;

@@ -1,32 +1,31 @@
 <script setup lang="ts">
-import SignUpForm from '@/components/SignUpForm.vue'
+import ForgetPasswdForm from '@/components/ForgetPasswdForm.vue'
 import { ElButton } from 'element-plus';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
+const handleNavigateToSignUp = () => {
+    router.push({name: 'SignUp'});
+};
 const handleNavigateToSignIn = () => {
     router.push({name: 'Login'});
-};
-const handleNavigateToForgetPassword = () => {
-    router.push({name: 'ForgetPassword'});
 };
 </script>
 
 <template>
-      <div class="signup-page">
+      <div class="login-page">
             <div class="background"></div>
             <div class="button-container">
-                  <el-button class="signIn" size="large" round text @click="handleNavigateToForgetPassword">
-                        忘記密碼？
+                  <el-button class="signUp" size="large" round text @click="handleNavigateToSignIn">
+                        我又把密碼想起來了
                   </el-button>
-                  <el-button class="signIn" size="large" round plain @click="handleNavigateToSignIn">
-                        我已經有帳號
+                  <el-button class="signUp" size="large" round plain @click="handleNavigateToSignUp">
+                        註冊
                   </el-button>
             </div>
             <div class="form-wrapper">
-                  <SignUpForm />
+                  <ForgetPasswdForm />
             </div>
-            <!-- 版權資訊 -->
             <footer class="footer-text">
                   <p>©2008-2025 Host by Prof. Po-Hsun Cheng(鄭伯壎) & Prof. Li-Wei Chen(陳立偉)</p>
                   <p>Software Engineering & Management, NKNU, Taiwan</p>
@@ -37,7 +36,7 @@ const handleNavigateToForgetPassword = () => {
 </template>
 
 <style scoped>
-.signup-page {
+.login-page {
       position: relative;
       width: 100%;
       overflow: hidden;
@@ -82,16 +81,16 @@ const handleNavigateToForgetPassword = () => {
       z-index: 2;
 }
 
-.signIn {
+.signUp {
       background-color: transparent;
       color: white;
 }
 
-.signIn.is-text {
+.signUp.is-text {
       color: white;
 }
 
-.signIn:hover {
+.signUp:hover {
       color: purple;
       background-color: white;
       border: transparent;

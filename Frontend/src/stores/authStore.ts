@@ -2,8 +2,7 @@ import { defineStore } from 'pinia';
 import { ref, type Ref } from 'vue';
 import { authService } from '@/services/authService';
 import router from '@/router';
-import type { User } from '@/types';
-import type { SignUpForm } from '@/types'
+import type { SignUpForm, ForgetForm, ResetForm, User } from '@/types';
 
 export const useAuthStore = defineStore('authStore', () => {
   // State
@@ -71,12 +70,45 @@ export const useAuthStore = defineStore('authStore', () => {
     }
   }
 
+  async function forget(formData: ForgetForm): Promise<void> {
+    try {
+      // 呼叫 service
+      await authService.forgotPassword(formData);
+      
+      // 註冊成功後，引導使用者去登入
+      // (注意：這裡的 'Login' 必須是您 router/index.ts 中定義的 name)
+      router.push({ name: 'Login' });
+      
+    } catch (error) {
+      // 拋出錯誤，讓 Vue 組件可以捕獲並顯示
+      console.error("Send Email failed:", error);
+      throw error;
+    }
+  }
+  async function reset(formData: ResetForm): Promise<void> {
+    try {
+      // 呼叫 service
+      await authService.resetPassword(formData);
+      
+      // 註冊成功後，引導使用者去登入
+      // (注意：這裡的 'Login' 必須是您 router/index.ts 中定義的 name)
+      router.push({ name: 'Login' });
+      
+    } catch (error) {
+      // 拋出錯誤，讓 Vue 組件可以捕獲並顯示
+      console.error("Reset password failed:", error);
+      throw error;
+    }
+  }
+
   return {
     isAuthenticated,
     user,
     login,
     logout,
     checkAuthStatus,
-    register
+    register,
+    forget, 
+    reset
   };
 });

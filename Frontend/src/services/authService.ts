@@ -3,9 +3,11 @@ import type { AxiosResponse } from 'axios';
 import type { 
   LoginResponse, 
   CheckSessionResponse, 
-  ProfileResponse 
+  ProfileResponse, 
+  SignUpForm, 
+  ResetForm,
+  ForgetForm
 } from '@/types';
-import type { SignUpForm } from '@/types'
 
 export const authService = {
   
@@ -28,5 +30,13 @@ export const authService = {
 
   signUp(formData: SignUpForm): Promise<AxiosResponse<{ msg: string }>> {
     return apiClient.post('auth/register', formData);
+  },
+
+  forgotPassword(formData: ForgetForm): Promise<AxiosResponse<{ msg: string }>> {
+    return apiClient.post<{ msg: string }>('/auth/forgot_password', formData);
+  },
+
+  resetPassword(formData: ResetForm): Promise<AxiosResponse<{ msg: string }>> {
+    return apiClient.post<{ msg: string }>('/auth/reset_password', formData);
   }
 };

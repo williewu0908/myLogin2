@@ -3,6 +3,8 @@ import { useAuthStore } from '@/stores/authStore';
 import Login from '@/views/Login.vue';
 import Home from '@/views/Home.vue';
 import SignUp from '@/views/SignUp.vue';
+import ForgetPassword from '@/views/ForgetPassword.vue';
+import ResetPassword from '@/views/ResetPassword.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -21,6 +23,18 @@ const routes: Array<RouteRecordRaw> = [
     path: '/signUp',
     name: 'SignUp',
     component: SignUp,
+    meta: { guestOnly: true } // 僅限訪客
+  },
+  {
+    path: '/forgetPassword',
+    name: 'ForgetPassword',
+    component: ForgetPassword,
+    meta: { guestOnly: true } // 僅限訪客
+  },
+  {
+    path: '/resetPassword',
+    name: 'ResetPassword',
+    component: ResetPassword,
     meta: { guestOnly: true } // 僅限訪客
   },
   // 根目錄重定向

@@ -7,13 +7,17 @@ const router = useRouter();
 const handleNavigateToSignUp = () => {
     router.push({name: 'SignUp'});
 };
+
+const handleNavigateToForgetPassword = () => {
+    router.push({name: 'ForgetPassword'});
+};
 </script>
 
 <template>
       <div class="login-page">
             <div class="background"></div>
             <div class="button-container">
-                  <el-button class="signUp" size="large" round text>
+                  <el-button class="signUp" size="large" round text @click="handleNavigateToForgetPassword">
                         忘記密碼？
                   </el-button>
                   <el-button class="signUp" size="large" round plain @click="handleNavigateToSignUp">

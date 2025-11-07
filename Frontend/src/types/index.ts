@@ -34,3 +34,14 @@ export interface SignUpForm {
   password: string;
   confirmPassword: string;
 }
+
+export interface ForgetForm {
+  userName: string;
+  Email: string;
+}
+
+export interface ResetForm {
+  token: string;
+  password: string;
+  confirmPassword: string;
+}

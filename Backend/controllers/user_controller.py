@@ -1,7 +1,9 @@
-from flask import Blueprint, request, jsonify, session
+from flask import Blueprint, request, jsonify, session, current_app
+from flask_mail import Message
 from models.users import User
-from extensions import db
+from extensions import db, mail, bcrypt
 import uuid
+from services.authService import get_reset_token_serializer
 
 # 建立一個 Blueprint
 # 'auth' 是這個藍圖的名稱
@@ -71,3 +73,69 @@ def protected_profile():
         ), 200
     else:
         return jsonify({"msg": "未授權"}), 401
+    
+@auth_bp.route('/forgot_password', methods=['POST'])
+def forgot_password():
+    data = request.get_json()
+    username = data.get('userName')
+    email = data.get('Email')
+    
+    # 基本驗證
+    if not email or not username:
+        return jsonify({"msg": "缺少必要資訊"}), 400
+
+    # 查詢同時匹配 username 和 email 的使用者
+    user = User.query.filter_by(username=username, email=email).first()
+
+    # 只有當帳號和 Email 都匹配時，才會執行
+    if user:
+        # 產生令牌
+        s = get_reset_token_serializer()
+        token = s.dumps(user.email, salt='password-reset-salt') 
+
+        # 建立前端重設 URL
+        reset_url = f"http://localhost:5173/resetPassword?token={token}"
+
+        # 發送 Email
+        try:
+            msg = Message(
+                subject="[EduTools] 密碼重設請求",
+                recipients=[user.email],
+                body=f"您好，請點擊以下連結來重設您的密碼：\n{reset_url}\n\n如果您沒有請求重設，請忽略此郵件。"
+            )
+            mail.send(msg)
+        except Exception as e:
+            current_app.logger.error(f"Email 發送失敗: {e}")
+    else:
+        return jsonify({"msg": "使用者帳號或Email不存在"})
+
+    return jsonify({"msg": "重設連結已發送至該信箱。"}), 200
+
+
+# 提交新密碼
+@auth_bp.route('/reset_password', methods=['POST'])
+def reset_password():
+    data = request.get_json()
+    token = data.get('token')
+    new_password = data.get('password')
+
+    s = get_reset_token_serializer()
+    
+    try:
+        # 驗證令牌 (時效預設 1 小時)
+        # 這裡會檢查 1. 簽章 2. Salt 3. 時效
+        email = s.loads(token, salt='password-reset-salt', max_age=3600) # 3600 秒 = 1 小時
+        
+    except Exception as e:
+        return jsonify({"msg": "您的重設連結無效或已過期。"}), 400
+
+    # 令牌有效，找到使用者並更新密碼
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        return jsonify({"msg": "使用者不存在。"}), 404 # 理論上不該發生
+
+    # 雜湊新密碼並儲存
+    user.password_hash = bcrypt.generate_password_hash(new_password).decode('utf-8')
+    db.session.commit()
+
+    return jsonify({"msg": "密碼已成功重設！"}), 200
