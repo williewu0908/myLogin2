@@ -1,7 +1,7 @@
-from flask import Blueprint, request, jsonify, session, current_app
+from flask import Blueprint, request, jsonify, session, current_app, redirect, url_for
 from flask_mail import Message
 from models.users import User
-from extensions import db, mail, bcrypt
+from extensions import db, mail, bcrypt, oauth
 import uuid
 from services.authService import get_reset_token_serializer
 
@@ -10,6 +10,8 @@ from services.authService import get_reset_token_serializer
 # __name__ 是必需的
 # url_prefix='/auth' 表示這個藍圖中的所有路由都會自動加上 /auth 前綴
 auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
+
+
 
 # 註冊
 @auth_bp.route('/register', methods=['POST'])
@@ -32,6 +34,8 @@ def register():
     db.session.commit()
     return jsonify({"msg": "用戶註冊成功"}), 201
 
+
+
 # 登入，如果登入成功，將使用者資訊存入 session
 @auth_bp.route('/login', methods=['POST'])
 def login():
@@ -48,11 +52,15 @@ def login():
         return jsonify({"msg": "登入成功", "user": {"username": user.username}})
     else:
         return jsonify({"msg": "帳號或密碼錯誤"}), 401
+    
+
 
 @auth_bp.route('/logout', methods=['POST'])
 def logout():
     session.clear()
     return jsonify({"msg": "登出成功"}), 200
+
+
 
 @auth_bp.route('/check_session', methods=['GET'])
 def check_session():
@@ -63,6 +71,8 @@ def check_session():
         ), 200
     else:
         return jsonify(is_logged_in=False), 401
+    
+
 
 @auth_bp.route('/profile', methods=['GET'])
 def protected_profile():
@@ -73,6 +83,8 @@ def protected_profile():
         ), 200
     else:
         return jsonify({"msg": "未授權"}), 401
+    
+
     
 @auth_bp.route('/forgot_password', methods=['POST'])
 def forgot_password():
@@ -94,7 +106,8 @@ def forgot_password():
         token = s.dumps(user.email, salt='password-reset-salt') 
 
         # 建立前端重設 URL
-        reset_url = f"http://localhost:5173/resetPassword?token={token}"
+        current_url = current_app.config.get('FRONTEND_BASE_URL')
+        reset_url = f"{current_url}/resetPassword?token={token}"
 
         # 發送 Email
         try:
@@ -110,6 +123,7 @@ def forgot_password():
         return jsonify({"msg": "使用者帳號或Email不存在"})
 
     return jsonify({"msg": "重設連結已發送至該信箱。"}), 200
+
 
 
 # 提交新密碼
@@ -139,3 +153,71 @@ def reset_password():
     db.session.commit()
 
     return jsonify({"msg": "密碼已成功重設！"}), 200
+
+
+
+
+
+# --- Google 登入 ---
+@auth_bp.route('/google/login')
+def google_login():
+    # 產生回呼 URL
+    # 'auth.google_callback' 指的是 'auth' 藍圖下的 'google_callback' 函式
+    redirect_uri = url_for('auth.google_callback', _external=True)
+    
+    # 使用 Authlib 產生 Google 登入頁面的 URL 並重新導向使用者
+    return oauth.google.authorize_redirect(redirect_uri)
+
+
+# --- 處理 Google 的回呼 ---
+@auth_bp.route('/google/callback')
+def google_callback():
+    try:
+        # 取得 Access Token
+        token = oauth.google.authorize_access_token()
+        
+        # 獲取使用者資訊
+        # 'userinfo' 是 OpenID Connect (OIDC) 的標準欄位
+        user_info = token.get('userinfo')
+
+        if not user_info or not user_info.get('email'):
+            return jsonify({"msg": "從 Google 獲取 Email 失敗"}), 400
+
+        email = user_info.get('email')
+        name = user_info.get('name')
+
+        # 檢查使用者是否存在 
+        user = User.query.filter_by(email=email).first()
+
+        if not user:
+            # 使用者不存在，自動為他註冊
+            
+            # 使用 Email 的 @ 符號前部分作為基本 username
+            username = email.split('@')[0]
+            if User.query.filter_by(username=username).first():
+                username = username + str(uuid.uuid4())[:4]
+                
+            # 產生一個隨機、無法被登入的密碼
+            random_password = str(uuid.uuid4())
+            
+            user = User(
+                id=str(uuid.uuid4()),
+                username=username,
+                user_true_name=name,
+                password=random_password,
+                email=email
+            )
+            db.session.add(user)
+            db.session.commit()
+
+        # 登入使用者 (寫入 Session)
+        session['user_id'] = user.id
+        session['username'] = user.username
+
+        # 重新導向回 Vue 首頁
+        current_url = current_app.config.get('FRONTEND_BASE_URL')
+        return redirect(f"{current_url}/home")
+
+    except Exception as e:
+        current_app.logger.error(f"Google OAuth 回呼失敗: {e}")
+        return jsonify({"msg": "快速登入失敗"}), 400
