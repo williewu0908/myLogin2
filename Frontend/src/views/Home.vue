@@ -13,6 +13,7 @@ interface FeatureCard {
   id: number;
   title: string;
   description: string;
+  author: string;
   imageUrl: string;
   targetUrl: string; // 點擊後要跳轉的 URL
 }
@@ -29,7 +30,8 @@ const groupedCardData = ref<CardGroup[]>([
       {
         id: 1,
         title: '功能一：數據分析',
-        description: '深入了解您的數據，提供視覺化報表。',
+        description: '深入了解您的數據，提供視覺化報表。深入了解您的數據，提供視覺化報表。',
+        author: '王曉明',
         imageUrl: 'https://picsum.photos/400/250?random=2',
         targetUrl: '/analytics'
       },
@@ -37,6 +39,7 @@ const groupedCardData = ref<CardGroup[]>([
         id: 2,
         title: '功能二：用戶管理',
         description: '輕鬆管理所有使用者的資料與權限。',
+        author: '王曉明',
         imageUrl: 'https://picsum.photos/400/250?random=3',
         targetUrl: '/users'
       },
@@ -44,6 +47,7 @@ const groupedCardData = ref<CardGroup[]>([
         id: 3,
         title: '功能三：專案設定',
         description: '設定您的專案參數與喜好設定。',
+        author: '王曉明',
         imageUrl: 'https://picsum.photos/400/250?random=4',
         targetUrl: '/settings'
       },
@@ -56,6 +60,7 @@ const groupedCardData = ref<CardGroup[]>([
         id: 4,
         title: '功能一：數據分析',
         description: '深入了解您的數據，提供視覺化報表。',
+        author: '王曉明',
         imageUrl: 'https://picsum.photos/400/250?random=2',
         targetUrl: '/analytics'
       },
@@ -63,6 +68,7 @@ const groupedCardData = ref<CardGroup[]>([
         id: 5,
         title: '功能二：用戶管理',
         description: '輕鬆管理所有使用者的資料與權限。',
+        author: '王曉明',
         imageUrl: 'https://picsum.photos/400/250?random=3',
         targetUrl: '/users'
       },
@@ -70,6 +76,7 @@ const groupedCardData = ref<CardGroup[]>([
         id: 6,
         title: '功能三：專案設定',
         description: '設定您的專案參數與喜好設定。',
+        author: '王曉明',
         imageUrl: 'https://picsum.photos/400/250?random=4',
         targetUrl: '/settings'
       },
@@ -77,6 +84,7 @@ const groupedCardData = ref<CardGroup[]>([
         id: 7,
         title: '功能四：外部連結',
         description: '點擊這裡查看我們的官方文件。',
+        author: '王曉明',
         imageUrl: 'https://picsum.photos/400/250?random=5',
         targetUrl: 'https://example.com'
       },
@@ -89,6 +97,7 @@ const groupedCardData = ref<CardGroup[]>([
         id: 8,
         title: '功能一：數據分析',
         description: '深入了解您的數據，提供視覺化報表。',
+        author: '王曉明',
         imageUrl: 'https://picsum.photos/400/250?random=2',
         targetUrl: '/analytics'
       },
@@ -96,6 +105,7 @@ const groupedCardData = ref<CardGroup[]>([
         id: 9,
         title: '功能二：用戶管理',
         description: '輕鬆管理所有使用者的資料與權限。',
+        author: '王曉明',
         imageUrl: 'https://picsum.photos/400/250?random=3',
         targetUrl: '/users'
       },
@@ -103,8 +113,22 @@ const groupedCardData = ref<CardGroup[]>([
         id: 10,
         title: '功能四：外部連結',
         description: '點擊這裡查看我們的官方文件。',
+        author: '王曉明',
         imageUrl: 'https://picsum.photos/400/250?random=5',
         targetUrl: 'https://example.com'
+      },
+    ]
+  },
+  {
+    year: '其他',
+    cards: [
+      {
+        id: 11,
+        title: 'ZeroJudge',
+        description: '高中生程式解題系統！',
+        author: '高師附中江其勳老師',
+        imageUrl: 'https://picsum.photos/400/250?random=2',
+        targetUrl: '/analytics'
       },
     ]
   }
@@ -192,6 +216,7 @@ const handleLogout = async () => {
                   <div class="card-content">
                     <h3>{{ card.title }}</h3>
                     <p>{{ card.description }}</p>
+                    <p>作者：{{ card.author }}</p>
                   </div>
                 </el-card>
               </el-col>
@@ -317,7 +342,7 @@ const handleLogout = async () => {
   transition: all 0.3s ease;
   max-width: 288px;
   margin: 0 auto 20px auto;
-  height: 250px;
+  height: 280px;
 }
 
 .feature-card:hover {
@@ -342,8 +367,14 @@ const handleLogout = async () => {
 
 .card-content p {
   font-size: 0.9rem;
+  margin-bottom: 6px;
   color: #606266;
   line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;   /* 超出顯示省略號 */
+  max-width: 100%;
+  display: block;
 }
 
 .year-section {
