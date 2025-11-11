@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useAuthStore } from '@/stores/authStore';
 import { ElAnchor, ElAnchorLink, ElMessage, ElDialog, ElAvatar, ElMain, ElButton, ElCard, ElContainer, ElHeader, ElFooter, ElCol, ElRow, ElImage } from 'element-plus'
 import { useRouter } from 'vue-router';
@@ -23,117 +23,18 @@ interface CardGroup {
   cards: FeatureCard[];
 }
 
-const groupedCardData = ref<CardGroup[]>([
-  {
-    year: 2025,
-    cards: [
-      {
-        id: 1,
-        title: '功能一：數據分析',
-        description: '深入了解您的數據，提供視覺化報表。深入了解您的數據，提供視覺化報表。',
-        author: '王曉明',
-        imageUrl: 'https://picsum.photos/400/250?random=2',
-        targetUrl: '/analytics'
-      },
-      {
-        id: 2,
-        title: '功能二：用戶管理',
-        description: '輕鬆管理所有使用者的資料與權限。',
-        author: '王曉明',
-        imageUrl: 'https://picsum.photos/400/250?random=3',
-        targetUrl: '/users'
-      },
-      {
-        id: 3,
-        title: '功能三：專案設定',
-        description: '設定您的專案參數與喜好設定。',
-        author: '王曉明',
-        imageUrl: 'https://picsum.photos/400/250?random=4',
-        targetUrl: '/settings'
-      },
-    ]
-  },
-  {
-    year: 2024,
-    cards: [
-      {
-        id: 4,
-        title: '功能一：數據分析',
-        description: '深入了解您的數據，提供視覺化報表。',
-        author: '王曉明',
-        imageUrl: 'https://picsum.photos/400/250?random=2',
-        targetUrl: '/analytics'
-      },
-      {
-        id: 5,
-        title: '功能二：用戶管理',
-        description: '輕鬆管理所有使用者的資料與權限。',
-        author: '王曉明',
-        imageUrl: 'https://picsum.photos/400/250?random=3',
-        targetUrl: '/users'
-      },
-      {
-        id: 6,
-        title: '功能三：專案設定',
-        description: '設定您的專案參數與喜好設定。',
-        author: '王曉明',
-        imageUrl: 'https://picsum.photos/400/250?random=4',
-        targetUrl: '/settings'
-      },
-      {
-        id: 7,
-        title: '功能四：外部連結',
-        description: '點擊這裡查看我們的官方文件。',
-        author: '王曉明',
-        imageUrl: 'https://picsum.photos/400/250?random=5',
-        targetUrl: 'https://example.com'
-      },
-    ]
-  },
-  {
-    year: 2023,
-    cards: [
-      {
-        id: 8,
-        title: '功能一：數據分析',
-        description: '深入了解您的數據，提供視覺化報表。',
-        author: '王曉明',
-        imageUrl: 'https://picsum.photos/400/250?random=2',
-        targetUrl: '/analytics'
-      },
-      {
-        id: 9,
-        title: '功能二：用戶管理',
-        description: '輕鬆管理所有使用者的資料與權限。',
-        author: '王曉明',
-        imageUrl: 'https://picsum.photos/400/250?random=3',
-        targetUrl: '/users'
-      },
-      {
-        id: 10,
-        title: '功能四：外部連結',
-        description: '點擊這裡查看我們的官方文件。',
-        author: '王曉明',
-        imageUrl: 'https://picsum.photos/400/250?random=5',
-        targetUrl: 'https://example.com'
-      },
-    ]
-  },
-  {
-    year: '其他',
-    cards: [
-      {
-        id: 11,
-        title: 'ZeroJudge',
-        description: '高中生程式解題系統！',
-        author: '高師附中江其勳老師',
-        imageUrl: 'https://picsum.photos/400/250?random=2',
-        targetUrl: '/analytics'
-      },
-    ]
+const groupedCardData = ref<CardGroup[]>([]);
+// 🚀 載入外部 JSON
+onMounted(async () => {
+  try {
+    const response = await fetch('/src/assets/data/app.json')
+    if (!response.ok) throw new Error('載入失敗')
+    groupedCardData.value = await response.json()
+  } catch (error) {
+    console.error('無法載入 app.json：', error)
+    ElMessage.error('無法載入功能資料')
   }
-]);
-
+})
 
 // 點擊卡片時的處理函式
 const handleCardClick = (url: string) => {
@@ -212,7 +113,9 @@ const handleLogout = async () => {
               <el-col v-for="card in group.cards" :key="card.id" :xs="24" :sm="12" :md="8" :lg="6">
                 <el-card shadow="hover" :body-style="{ padding: '0px' }" class="feature-card"
                   @click="handleCardClick(card.targetUrl)">
-                  <el-image :src="card.imageUrl" fit="cover" class="card-image" alt="功能圖片" />
+                  <div class="card-image-container">
+                    <el-image :src="card.imageUrl" fit="cover" class="card-image" alt="功能圖片" />
+                  </div>
                   <div class="card-content">
                     <h3>{{ card.title }}</h3>
                     <p>{{ card.description }}</p>
@@ -261,7 +164,7 @@ const handleLogout = async () => {
   backdrop-filter: blur(2px);
   background-color: #1313138e;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.274);
-  z-index: 10000;
+  z-index: 999;
 }
 
 .home-header-button-container h1 {
@@ -349,10 +252,17 @@ const handleLogout = async () => {
   transform: translateY(-5px);
 }
 
-.card-image {
+.card-image-container {
   width: 100%;
   height: 162px;
-  display: block;
+  display: flex;
+  align-items: center;
+  background-color: #fafafa;
+}
+
+.card-image {
+  height: 100%;
+  margin: 0 auto;
 }
 
 .card-content {
@@ -372,7 +282,8 @@ const handleLogout = async () => {
   line-height: 1.4;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;   /* 超出顯示省略號 */
+  text-overflow: ellipsis;
+  /* 超出顯示省略號 */
   max-width: 100%;
   display: block;
 }
@@ -412,5 +323,9 @@ const handleLogout = async () => {
   line-height: 1.5;
   z-index: 3;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.el-message:deep() {
+  z-index: 1000;
 }
 </style>

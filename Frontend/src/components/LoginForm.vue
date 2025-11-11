@@ -21,6 +21,7 @@ const handleLogin = async () => {
 
     try {
         await authStore.login(loginForm.userName, loginForm.password)
+        ElMessage.success('登入成功！')
     } catch (error) {
         isLoading.value = false
         if (error instanceof Error) {
