@@ -23,7 +23,8 @@ app.config['SESSION_TYPE'] = 'redis'  # 告訴 Flask-Session 使用 redis
 app.config['SESSION_PERMANENT'] = True  # 關閉瀏覽器仍不失效
 app.config['SESSION_USE_SIGNER'] = True  # 對 session_id cookie 簽章
 app.config['PERMANENT_SESSION_LIFETIME'] = 86400 # session 有效期為一天 (單位: 秒)
-app.config['SESSION_REDIS'] = redis.from_url('redis://localhost:6379')
+REDIS_URL = os.environ.get('REDIS_URL') or 'redis://localhost:6379'
+app.config['SESSION_REDIS'] = redis.from_url(REDIS_URL)
 
 # --- 設定 Flask-Mail ---
 app.config['MAIL_DEBUG'] = True
