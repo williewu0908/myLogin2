@@ -36,7 +36,7 @@
         "title": "myBlock3",
         "description": "利用AI來幫您編寫程式碼",
         "author": "煜堃+彥宇+威廷",
-        "imageUrl": "/src/assets/data/img/myBlock.png",
+        "imageUrl": "/img/myBlock.png",
         "targetUrl": "/analytics"
       },
       {
@@ -102,8 +102,8 @@
         "title": "ZeroJudge",
         "description": "高中生程式解題系統！",
         "author": "高師附中江其勳老師",
-        "imageUrl": "/src/assets/data/img/zeroJudge.svg",
-        "targetUrl": "/analytics"
+        "imageUrl": "/img/zeroJudge.svg",
+        "targetUrl": "https://zerojudge.tw/"
       }
     ]
   }
