@@ -4,6 +4,9 @@ import { useAuthStore } from '@/stores/authStore'
 import { ElMessage, ElForm, ElFormItem, ElButton, ElInput, ElCard, ElContainer, ElHeader, ElDivider } from 'element-plus'
 import type { LoginForm } from '@/types'
 
+const baseURL = import.meta.env.VITE_API_BASE_URL;
+const googleAuthURL = `${baseURL}/auth/google/login`;
+
 const isLoading = ref(false)
 const authStore = useAuthStore()
 const loginForm = reactive<LoginForm>({
@@ -61,7 +64,7 @@ const handleLogin = async () => {
                 <span style="color: var(--el-text-color-regular);">快速登入</span>
             </el-divider>
             <div class="fast-login-container">
-                <a href="http://localhost:5000/auth/google/login" class="fast-login-link">
+                <a :href="googleAuthURL" class="fast-login-link">
                     <el-button circle>
                         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="16" height="16"
                             viewBox="0 0 48 48">
