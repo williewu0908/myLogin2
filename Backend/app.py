@@ -44,7 +44,7 @@ db.init_app(app)
 bcrypt.init_app(app)
 # 設置 CORS (允許 Vue 帶 Cookie)
 origins_list = ["http://localhost:5173", "http://140.127.74.15"]
-cors.init_app(app, resources={r"/api/.*": {"origins": origins_list}}, supports_credentials=True)
+cors.init_app(app, resources={r"/myLogin2/api/.*": {"origins": origins_list}}, supports_credentials=True)
 sess.init_app(app)
 mail.init_app(app)
 oauth.init_app(app)

@@ -9,7 +9,7 @@ from services.authService import get_reset_token_serializer
 # 'auth' 是這個藍圖的名稱
 # __name__ 是必需的
 # url_prefix='/auth' 表示這個藍圖中的所有路由都會自動加上 /api/auth 前綴
-auth_bp = Blueprint('auth', __name__, url_prefix='/api/auth')
+auth_bp = Blueprint('auth', __name__, url_prefix='/myLogin2/api/auth')
 
 
 
