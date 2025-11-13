@@ -27,7 +27,7 @@ const groupedCardData = ref<CardGroup[]>([]);
 // 🚀 載入外部 JSON
 onMounted(async () => {
   try {
-    const response = await fetch('/src/assets/data/app.json')
+    const response = await fetch('/app.json')
     if (!response.ok) throw new Error('載入失敗')
     groupedCardData.value = await response.json()
   } catch (error) {
