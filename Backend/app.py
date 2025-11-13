@@ -16,7 +16,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['FRONTEND_BASE_URL'] = os.environ.get('FRONTEND_BASE_URL')
 
 # 設置 SESSION 必要的 SECRET_KEY
-app.config['SECRET_KEY'] = os.urandom(24)
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY') or os.urandom(24).hex()
 
 # 設定 Flask-Session
 app.config['SESSION_TYPE'] = 'redis'  # 告訴 Flask-Session 使用 redis
