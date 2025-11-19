@@ -1,0 +1,40 @@
+# --- 1. 基礎映像檔 ---
+FROM python:3.13-slim
+
+# --- 2. 設定環境變數 ---
+# pip 不要快取，保持映像檔精簡
+ENV PIP_NO_CACHE_DIR=true
+# 不要產生 .pyc 檔案
+ENV PYTHONDONTWRITEBYTECODE=1
+
+# --- 3. 設定工作目錄 ---
+# 在容器內建立一個 /app 資料夾，並將其設為工作目錄
+WORKDIR /app
+
+# --- 4. 安裝依賴 (利用 Docker 快取層) ---
+# (a) 先只複製 requirements.txt 檔案
+# 如果程式碼變更，但依賴不變，Docker 就不會重新安裝 requirements
+COPY requirements.txt .
+
+# (b) 安裝 Gunicorn 和所有依賴
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir gunicorn && \
+    pip install --no-cache-dir -r requirements.txt
+
+# --- 5. 複製應用程式程式碼 ---
+# 把 Backend 資料夾中的所有檔案 (.py, .env) 複製到容器的 /app 目錄
+COPY . .
+
+# --- 6. 開放埠號 ---
+# 聲明 Gunicorn 將在 5000 埠運行
+EXPOSE 5000
+
+# --- 7. 啟動指令 ---
+# 當容器啟動時，執行 Gunicorn
+#
+# --workers 3:         啟動 3 個 worker 程序
+# --bind 0.0.0.0:5000: 綁定到 0.0.0.0 (代表「容器內所有 IP」)
+#                      Docker 網路 (Nginx 容器) 才能連線到它
+#                      *絕對不能* 用 127.0.0.1 (localhost)
+# app:app:             執行 app.py 檔案中的 app 物件
+CMD ["gunicorn", "--workers", "3", "--bind", "0.0.0.0:5000", "app:app"]

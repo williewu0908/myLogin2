@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  # 1. Flask/Gunicorn 服務
+  myLogin2-app:
+    build: 
+      context: ./Backend 
+    container_name: myLogin2_flask_app
+    restart: unless-stopped
+    env_file: ./.env
+    
+    # 將容器的 5000 埠，綁定到主機的 127.0.0.1:5000
+    # 讓主機的 Nginx 可以透過 http://127.0.0.1:5000 找到它，但公網無法直接存取
+    ports:
+      - "127.0.0.1:5000:5000" 
+      
+    depends_on:
+      - myLogin2-db
+      - myLogin2-redis
+    networks:
+      - myLogin2_network
+
+  # 2. Redis 服務
+  myLogin2-redis:
+    image: redis:6-alpine
+    container_name: myLogin2_redis_service
+    restart: always
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - myLogin2_redis_data:/data
+    networks:
+      - myLogin2_network
+    # Redis 不需要 'ports'，因為只有 Docker 內部的 'flask-app' 和 'lab-app' 需要連線到它，它們都在 'sso_network' 內部
+
+  # 3. MySQL 服務
+  myLogin2-db:
+    image: mariadb:10.11
+    container_name: myLogin2_db_service
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: mylogindb
+      MYSQL_USER: myLoginUser
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - myLogin2_db_data:/var/lib/mysql
+    networks:
+      - myLogin2_network
+  
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: myLogin2_pma
+    restart: always
+    environment:
+      PMA_HOST: myLogin2-db
+      PMA_ARBITRARY: 0
+    ports:
+      - "8080:80"
+    depends_on:
+      - myLogin2-db
+    networks:
+      - myLogin2_network
+
+networks:
+  myLogin2_network:
+    driver: bridge
+    name: myLogin2_network
+volumes:
+  myLogin2_db_data:
+  myLogin2_redis_data:
