@@ -4,7 +4,7 @@ services:
   # 1. Flask/Gunicorn 服務
   mylogin2-app:
     build: 
-      context: ./Backend 
+      context: .
     container_name: mylogin2_flask_app
     restart: unless-stopped
     env_file: ./.env
