@@ -4,8 +4,13 @@ from flask import Flask
 from extensions import db, bcrypt, cors, sess, mail, oauth
 from controllers.user_controller import auth_bp
 from dotenv import load_dotenv
+from werkzeug.middleware.proxy_fix import ProxyFix 
 
 app = Flask(__name__)
+# 告訴 Flask 它是在 Nginx (Proxy) 後面運行的
+# x_proto=1 代表：請信任 Nginx 傳來的 'X-Forwarded-Proto' (https) 標頭
+# 這樣 url_for 就會自動產生 'https://' 的網址
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 load_dotenv()
 
 # 設定資料庫 URI
