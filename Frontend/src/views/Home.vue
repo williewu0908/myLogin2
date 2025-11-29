@@ -113,7 +113,7 @@ const handleLogout = async () => {
                 <el-card shadow="hover" :body-style="{ padding: '0px' }" class="feature-card"
                   @click="handleCardClick(card.targetUrl)">
                   <div class="card-image-container">
-                    <el-image :src="card.imageUrl || '/img/ComingSoon.png'" fit="cover" class="card-image" alt="應用圖片" lazy />
+                    <el-image :src="card.imageUrl || '/img/ComingSoon.png'" fit="contain" class="card-image" alt="應用圖片" lazy />
                   </div>
                   <div class="card-content">
                     <h3>{{ card.title }}</h3>
