@@ -3,36 +3,47 @@
     "year": 2025,
     "cards": [
       {
-        "id": 1,
-        "title": "功能一：數據分析",
-        "description": "深入了解您的數據，提供視覺化報表。",
-        "author": "王曉明",
-        "imageUrl": "https://picsum.photos/450/250?random=2",
+        "title": "myFact",
+        "description": "請加上應用程式描述",
+        "author": "翊禎+薏安",
+        "imageUrl": "",
         "targetUrl": "/analytics"
       },
       {
-        "id": 2,
-        "title": "功能二：用戶管理",
-        "description": "輕鬆管理所有使用者的資料與權限。",
-        "author": "王曉明",
-        "imageUrl": "https://picsum.photos/450/250?random=3",
+        "title": "myComics",
+        "description": "請加上應用程式描述",
+        "author": "若唏",
+        "imageUrl": "",
         "targetUrl": "/users"
       },
       {
-        "id": 3,
-        "title": "功能三：專案設定",
-        "description": "設定您的專案參數與喜好設定。",
-        "author": "王曉明",
-        "imageUrl": "https://picsum.photos/450/250?random=4",
+        "title": "myRun",
+        "description": "請加上應用程式描述",
+        "author": "淑龍",
+        "imageUrl": "",
+        "targetUrl": "/settings"
+      },
+      {
+        "title": "myLIne",
+        "description": "請加上應用程式描述",
+        "author": "宇翔",
+        "imageUrl": "",
+        "targetUrl": "/settings"
+      },
+      {
+        "title": "myUiux",
+        "description": "請加上應用程式描述",
+        "author": "語珊",
+        "imageUrl": "",
         "targetUrl": "/settings"
       }
+
     ]
   },
   {
     "year": 2024,
     "cards": [
       {
-        "id": 4,
         "title": "myBlock3",
         "description": "利用AI來幫您編寫程式碼",
         "author": "煜堃+彥宇+威廷",
@@ -40,28 +51,25 @@
         "targetUrl": "/analytics"
       },
       {
-        "id": 5,
-        "title": "功能二：用戶管理",
-        "description": "輕鬆管理所有使用者的資料與權限。",
-        "author": "王曉明",
-        "imageUrl": "https://picsum.photos/450/250?random=3",
+        "title": "myRel",
+        "description": "台灣與美國資訊相關職缺內容之關係探討",
+        "author": "思婷+宛靜+炘穎",
+        "imageUrl": "/img/myRel.png",
+        "targetUrl": "/analytics"
+      },
+      {
+        "title": "myJudge2",
+        "description": "適合於課堂上使用的Online Judge(for Python)",
+        "author": "艾珊",
+        "imageUrl": "/img/myJudge2.png",
         "targetUrl": "/users"
       },
       {
-        "id": 6,
-        "title": "功能三：專案設定",
-        "description": "設定您的專案參數與喜好設定。",
-        "author": "王曉明",
-        "imageUrl": "https://picsum.photos/450/250?random=4",
+        "title": "myRect",
+        "description": "請加上應用程式描述",
+        "author": "星瑜",
+        "imageUrl": "",
         "targetUrl": "/settings"
-      },
-      {
-        "id": 7,
-        "title": "功能四：外部連結",
-        "description": "點擊這裡查看我們的官方文件。",
-        "author": "王曉明",
-        "imageUrl": "https://picsum.photos/450/250?random=5",
-        "targetUrl": "https://example.com"
       }
     ]
   },
@@ -69,27 +77,24 @@
     "year": 2023,
     "cards": [
       {
-        "id": 8,
         "title": "功能一：數據分析",
         "description": "深入了解您的數據，提供視覺化報表。",
         "author": "王曉明",
-        "imageUrl": "https://picsum.photos/450/250?random=2",
+        "imageUrl": "",
         "targetUrl": "/analytics"
       },
       {
-        "id": 9,
         "title": "功能二：用戶管理",
         "description": "輕鬆管理所有使用者的資料與權限。",
         "author": "王曉明",
-        "imageUrl": "https://picsum.photos/450/250?random=3",
+        "imageUrl": "",
         "targetUrl": "/users"
       },
       {
-        "id": 10,
         "title": "功能四：外部連結",
         "description": "點擊這裡查看我們的官方文件。",
         "author": "王曉明",
-        "imageUrl": "https://picsum.photos/450/250?random=5",
+        "imageUrl": "",
         "targetUrl": "https://example.com"
       }
     ]
@@ -98,7 +103,6 @@
     "year": "其他",
     "cards": [
       {
-        "id": 11,
         "title": "ZeroJudge",
         "description": "高中生程式解題系統！",
         "author": "高師附中江其勳老師",

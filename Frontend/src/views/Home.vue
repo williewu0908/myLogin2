@@ -10,7 +10,6 @@ const router = useRouter();
 const authStore = useAuthStore();
 
 interface FeatureCard {
-  id: number;
   title: string;
   description: string;
   author: string;
@@ -110,11 +109,11 @@ const handleLogout = async () => {
             </h2>
 
             <el-row :gutter="20">
-              <el-col v-for="card in group.cards" :key="card.id" :xs="24" :sm="12" :md="8" :lg="6">
+              <el-col v-for="(card, index) in group.cards" :key="index" :xs="24" :sm="12" :md="8" :lg="6">
                 <el-card shadow="hover" :body-style="{ padding: '0px' }" class="feature-card"
                   @click="handleCardClick(card.targetUrl)">
                   <div class="card-image-container">
-                    <el-image :src="card.imageUrl" fit="cover" class="card-image" alt="功能圖片" />
+                    <el-image :src="card.imageUrl || '/img/ComingSoon.png'" fit="cover" class="card-image" alt="應用圖片" lazy />
                   </div>
                   <div class="card-content">
                     <h3>{{ card.title }}</h3>
